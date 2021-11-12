@@ -1,0 +1,106 @@
+{{#section 'title'}}Edit music{{/section}}
+
+<div id="msg" class="col-12 mb-3">
+    
+</div>
+<form id="frmUpload" enctype="multipart/form-data" method="POST" class="col-12" style="display: inherit;">
+    <div class="col-lg-3">
+        <div class="iq-card">
+            <div class="iq-card-header d-flex justify-content-between">
+                <div class="iq-header-title">
+                    <h4 class="card-title">Edit music</h4>
+                </div>
+            </div>
+            <div class="iq-card-body">
+                <div class="form-group">
+                    <div style="width: 100%;" class="add-img-user profile-img-edit">
+                        <img src="/images/song/upload-{{songData.ID}}.png" style="border-radius: unset;" class="profile-pic img-fluid"
+                            onerror="this.style.display='none'">
+                        <div style="padding-top:8px;text-align: center;" class="p-i mage">
+                            <a style="font-size: 16px;" href="javascript:void(0);"
+                                class="upload-button btn iq-bg-primary">Thumbnail Upload</a>
+                            <input class="file-upload" name="thumb" type="file" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="img-extension mt-3">
+                        <div class="d-inline-block align-items-center">
+                            <span>Only</span>
+                            <a href="javascript:void(0);">.jpg</a>
+                            <a href="javascript:void(0);">.png</a>
+                            <a href="javascript:void(0);">.jpeg</a>
+                            <span>allowed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-9">
+        <div class="iq-card">
+            <div class="iq-card-header d-flex justify-content-between">
+                <div class="iq-header-title">
+                    <h4 class="card-title">Music Information</h4>
+                </div>
+            </div>
+            <div class="iq-card-body">
+                <div class="new-user-info">
+                    <form>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="fname">Song Name:</label>
+                                <input type="text" class="form-control" value="{{songData.Name}}" name="name" id="fname" placeholder="Song Name">
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="lname">Singer:</label>
+                                <input type="text" class="form-control" value="{{songData.Singer}}" name="singer" id="lname" placeholder="Singer">
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="add1">Composer:</label>
+                                <input type="text" class="form-control" value="{{songData.composer}}" name="composer" id="add1"
+                                    placeholder="Composer">
+                            </div>
+                            <div class="form-group col-sm-12">
+                                <label>Category:</label>
+                                <select required name="category" class="form-control" id="selectCategory">
+                                </select>
+                            </div>
+                        </div>
+                        <hr>
+                        <button id="btnSubmit" disabled type="submit" class="btn btn-primary">Save now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{{#section 'js'}}
+<script>
+    let categorySongId = '{{songData.category}}'
+    let frmUpload = $('#frmUpload')
+    let btnSubmit = $('#btnSubmit')
+    let thumb = $('input[type="file"]')[0]
+    let selectCategory = $('#selectCategory')
+    let msg = $('#msg')
+    function showMessage(message,type='primary') {
+        msg.html(`<div class="alert text-white bg-${type}" role="alert">
+        <div class="iq-alert-text">${message}</div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <i class="ri-close-line"></i>
+        </button>
+    </div>`)
+    }
+    
+    $.get('/category/getIdName').then(resp=>{
+        const categoryList = resp || []
+        categoryList.forEach(x=>{
+            selectCategory.append(new Option(x.Name, x.ID));
+        })
+        selectCategory.val(categorySongId)
+        btnSubmit.attr('disabled',false)
+    })
+    
+    {{#if succMsg}}showMessage(`{{succMsg}}`,'success'){{/if}}
+    {{#if errMsg}}showMessage(`{{errMsg}}`){{/if}}
+</script>
+{{/section}}

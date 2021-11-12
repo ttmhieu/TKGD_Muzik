@@ -1,0 +1,147 @@
+{{#section 'title'}}User List{{/section}}
+
+<div class="col-sm-12">
+    <div class="iq-card">
+        <div class="iq-card-header d-flex justify-content-between">
+            <div class="iq-header-title">
+                <h4 class="card-title">User List</h4>
+            </div>
+            <div class="iq-card-header-toolbar d-flex align-items-center">
+                <a href="/user/add" class="btn btn-primary">Add New User</a>
+            </div>
+        </div>
+        <div class="iq-card-body">
+            <div class="table-responsive">
+                <table class="data-tables table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th width="2%">ID</th>
+                            <th width="20%">UserName</th>
+                            <th width="5%">Permission</th>
+                            <th width="5%">Status</th>
+                            <th width="6%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each userList}}
+                        <tr>
+                            <td>{{ID}}</td>
+                            <td>{{userName}}</td>
+                            <td class="list-user-action">
+                                {{#if permision}}
+                                <a class="bg-danger" onclick="updatePermission({{ID}}, 0)" data-placement="top" title=""
+                                        data-original-title="downgrade" style="width: fit-content; cursor: pointer;">
+                                    <i class="las la-hand-point-down p-1">Downgrade</i>
+                                </a>
+                                {{else}}
+                                <a class="bg-success" onclick="updatePermission({{ID}}, 1)" data-placement="top" title=""
+                                        data-original-title="Upgrade to admin" style="width: fit-content; cursor: pointer;">
+                                    <i class="las la-hand-point-up p-1">Upgrade to admin</i>
+                                </a>
+                                {{/if}}
+                            </td>
+                            <td class="list-user-action">
+                                {{#if status}}
+                                <span class="text-warning" style="font-weight: bold;">Actived</span>
+                                {{else}}
+                                <a class="bg-info" onclick="activeAccount({{ID}})"data-toggle="tooltip" data-placement="top" title=""
+                                        data-original-title="Active acount" style="width: fit-content; cursor: pointer;">
+                                    <i class="las la-user-plus">Active acount</i>
+                                </a>
+                                {{/if}}
+                            </td>
+                            <td>
+                                <div class="flex align-items-center list-user-action">
+                                    <a class="bg-primary" data-toggle="tooltip" data-placement="top" title=""
+                                        data-original-title="Edit" href="/user/{{ID}}/edit"><i
+                                            class="ri-pencil-line"></i></a>
+                                    <a class="bg-primary" data-toggle="modal" data-target="#deleteModal{{ID}}" data-placement="top" title=""
+                                        data-original-title="Delete"><i class="ri-delete-bin-line"></i></a>
+                                    <div class="modal fade" id="deleteModal{{ID}}" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Comfirm delete</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure delete this account?<br>
+                                                    <b>{{userName}}</b>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Close</button>
+                                                    <form action="/user/delete" method="POST">
+                                                        <input type="text" name="userId" required value='{{ID}}' style="display: none;">
+                                                        <button type="submit" class="btn btn-primary">Detele</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation example" class="pagination justify-content-center">
+                    <ul class="pagination mb-0">
+                        <li class="page-item {{#unless Pagination.can_Prev}}disabled{{/unless}}">
+                            <a class="page-link" href="/user?page={{Pagination.pre_Value}}">Previous</a>
+                        </li>
+                        {{#each Pagination.page_Items}}
+                            {{#if isActive}}
+                            <li class="page-item active" aria-current="page">
+                                <span class="page-link">
+                                    {{value}}
+                                </span>
+                            </li>
+                            {{else}}
+                            <li class="page-item">
+                                <a class="page-link" href="/user?page={{value}}">{{value}}</a>
+                            </li>
+                            {{/if}}
+                        {{/each}}
+                        <li class="page-item {{#unless Pagination.can_Next}}disabled{{/unless}}">
+                            <a class="page-link" href="/user?page={{Pagination.next_Value}}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript"></script>
+{{#section 'js'}}
+<script>
+function updatePermission(userId, permision) {
+    var dataToSend = { ID: userId, permision };
+    dataToSend = JSON.stringify({ dataToSend });
+    $.ajax({
+        url: "/user/updatePermission",
+        type: "POST",
+        data: 'info=' + dataToSend,
+        success: function (status) {
+            location.reload();
+        }
+    });
+}
+
+function activeAccount(userId) {
+    $.ajax({
+        url: "/user/activeAccount",
+        type: "POST",
+        data: 'ID=' + userId,
+        success: function (status) {
+            location.reload();
+        }
+    });
+}
+</script>
+{{/section}}

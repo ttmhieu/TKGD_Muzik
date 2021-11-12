@@ -1,0 +1,39 @@
+{
+    "site" : {
+        "url": "http://localhost:3000"
+    },
+    "authentication":{
+        "saltRounds": 8
+    },
+    "email": {
+        "service": "Gmail",
+        "user": "tn397032@gmail.com",
+        "from": "MUZIK Admin",
+        "pass": "11112222AAAA"
+    },
+    "mysql": {
+        "connectionLimit": 50,
+        "host": "remotemysql.com",
+        "user": "JuMJWPpv2T",
+        "password": "grGVh0yXNO",
+        "database": "JuMJWPpv2T",
+        "multipleStatements":true
+    },
+    "pagination": {
+        "limitCategory": 12,
+        "limitUser": 12,
+        "limitSong":18
+    },
+    "stack": {
+        "limitAlbum": 12,
+        "toptrend": 9,
+        "newest": 10,
+        "hot": 10,
+        "trending": 12,
+        "popular": 12
+    },
+    "schedule":{
+        "like":"*/30 * * * * *",
+        "comment":"*/30 * * * * *"
+    }
+}

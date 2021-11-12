@@ -1,0 +1,111 @@
+{{#section 'title'}}Song List{{/section}}
+
+<div class="col-sm-12">
+    <div class="iq-card">
+        <div class="iq-card-header d-flex justify-content-between">
+            <div class="iq-header-title">
+                <h4 class="card-title">Song Lists</h4>
+            </div>
+            <div class="iq-card-header-toolbar d-flex align-items-center">
+                <a href="/song/upload" class="btn btn-primary">Upload New Song</a>
+            </div>
+        </div>
+        <div class="iq-card-body">
+            <div class="table-responsive">
+                <table class="data-tables table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th width="5%">ID</th>
+                            <th width="20%">Song Name</th>
+                            <th width="15%">Singer</th>
+                            <th width="15%">Composer</th>
+                            <th width="10%">Views</th>
+                            <th width="10%">Likes</th>
+                            <th width="15%">Status</th>
+                            <th width="10%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each songList}}
+                        <tr>
+                            <td>{{ID}}</td>
+                            <td>{{Name}}</td>
+                            <td>{{Singer}}</td>
+                            <td>{{composer}}</td>
+                            <td>{{views}}</td>
+                            <td>{{likes}}</td>
+                            <td>{{#if status}}
+                                <span class="badge iq-bg-success">Published</span>
+                                {{#if ../isAdmin}}
+                                <form style="display: inline;" action="/song/{{ID}}/draft" method="POST">
+                                    <button class="btn btn-primary"><i class="fa fa-cloud-download" aria-hidden="true"></i></button>
+                                </form>
+                                {{/if}}
+                                {{else}}
+                                <span class="badge iq-bg-warning">Pending</span>
+                                {{#if ../isAdmin}}
+                                <form style="display: inline;" action="/song/{{ID}}/publish" method="POST">
+                                    <button class="btn btn-success"><i class="fa fa-cloud-upload" aria-hidden="true"></i></button>
+                                </form>
+                                {{/if}}
+                                {{/if}}
+                            </td>
+                            <td>
+                                <div class="flex align-items-center list-user-action">
+                                    <a class="bg-primary" data-toggle="tooltip" data-placement="top" title=""
+                                        data-original-title="Edit" href="/song/{{ID}}/edit"><i
+                                            class="ri-pencil-line"></i></a>
+                                    <a href="javascript:void(0);" songId="{{ID}}" songName="{{Name}}"
+                                        onclick="onDelete(this)" class="bg-primary" data-toggle="modal" data-target="#deleteModal">
+                                        <i class="ri-delete-bin-line"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Comfirm delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure delete this song?</p>
+                <p>ID:<b id="deleteId">id</b></p>
+                <p>Name:<b id="deleteName">name</b></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form id="deleteForm" method="POST">
+                    <button type="submit" class="btn btn-primary">Detele</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{#section 'css'}}
+<link rel="stylesheet" href="/css/dataTables.bootstrap4.min.css">
+{{/section}}
+
+{{#section 'js'}}
+<script src="/js/jquery.dataTables.min.js"></script>
+<script src="/js/dataTables.bootstrap4.min.js"></script>
+<script>
+    function onDelete(ctr){
+        const id = $(ctr).attr('songid')
+        $('#deleteId').html(id)
+        $('#deleteName').html($(ctr).attr('songname'))
+        $('#deleteForm').attr('action',`/song/${id}/delete`)
+    }
+</script>
+{{/section}}

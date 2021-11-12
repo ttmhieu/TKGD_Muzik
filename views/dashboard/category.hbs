@@ -1,0 +1,108 @@
+{{#section 'title'}}Category List{{/section}}
+
+<div class="col-sm-12">
+    <div class="iq-card">
+        <div class="iq-card-header d-flex justify-content-between">
+            <div class="iq-header-title">
+                <h4 class="card-title">Category List</h4>
+            </div>
+            <div class="iq-card-header-toolbar d-flex align-items-center">
+                <a href="/category/add" class="btn btn-primary">Add New Category</a>
+            </div>
+        </div>
+        <div class="iq-card-body">
+            <div class="table-responsive">
+                <table class="data-tables table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th width="2%">ID</th>
+                            <th width="20%">Category name</th>
+                            <th width="20%">Description</th>
+                            <th width="5%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each categoryList}}
+                        <tr>
+                            <td>{{ID}}</td>
+                            <td>{{Name}}</td>
+                            <td>{{description}}</td>
+                            <td>
+                                <div class="flex align-items-center list-user-action">
+                                    <a class="bg-primary" data-toggle="tooltip" data-placement="top" title=""
+                                        data-original-title="Edit" href="/category/{{ID}}/edit"><i
+                                            class="ri-pencil-line"></i></a>
+                                    <a class="bg-primary" data-toggle="modal" data-target="#deleteModal{{ID}}" data-placement="top" title=""
+                                        data-original-title="Delete"><i class="ri-delete-bin-line"></i></a>
+                                    <div class="modal fade" id="deleteModal{{ID}}" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Comfirm delete</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure delete this category?<br>
+                                                    <b>{{Name}}</b>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Close</button>
+                                                    <form action="/category/delete" method="POST">
+                                                        <input type="text" name="categoryId" required value='{{ID}}' style="display: none;">
+                                                        <button type="submit" class="btn btn-primary">Detele</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation example" class="pagination justify-content-center">
+                    <ul class="pagination mb-0">
+                        <li class="page-item {{#unless Pagination.can_Prev}}disabled{{/unless}}">
+                            <a class="page-link" href="/category?page={{Pagination.pre_Value}}">Previous</a>
+                        </li>
+                        {{#each Pagination.page_Items}}
+                            {{#if isActive}}
+                            <li class="page-item active" aria-current="page">
+                                <span class="page-link">
+                                    {{value}}
+                                </span>
+                            </li>
+                            {{else}}
+                            <li class="page-item">
+                                <a class="page-link" href="/category?page={{value}}">{{value}}</a>
+                            </li>
+                            {{/if}}
+                        {{/each}}
+                        <li class="page-item {{#unless Pagination.can_Next}}disabled{{/unless}}">
+                            <a class="page-link" href="/category?page={{Pagination.next_Value}}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let url = new URL(window.location.href);
+    let status = url.searchParams.get("status");
+    let params = new URLSearchParams(url.search);
+
+    if (status == 'edited'){
+        window.setTimeout('alert("Successfully edited category!!!");window.close();', 500);
+    }
+    else if(status == 'added'){
+        window.setTimeout('alert("Successfully added category!!!");window.close();', 500);
+    }
+    history.replaceState(null, "", location.href.split("?")[0]);
+</script>

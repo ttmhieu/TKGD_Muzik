@@ -1,0 +1,123 @@
+{{#section 'title'}}Favorite songs{{/section}}
+<div style="width: fit-content" class="mx-auto mb-3">
+    <h1 class="text-danger">Favorite songs</h1>
+</div>
+<div class="col-lg-12 mx-auto">
+    <div class="iq-card">
+        <div class="iq-card-body">
+            <ul class="list-unstyled iq-music-slide mb-0">
+                {{#each favoriteList}}
+                <li id="favoriteMusic{{songId}}"class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center row">
+                        <div class="media align-items-center col-10 col-md-5">
+                            <div class="iq-realese-song ">
+                                <a href="/music/{{songId}}"><img src="/images/song/upload-{{songId}}.png"
+                                        class="img-border-radius avatar-60 img-fluid" alt=""></a>
+                            </div>
+                            <div class="media-body ml-3">
+                                <p class="mb-0">{{Name}}</p>
+                                <small>{{composer}}</small>
+                            </div>
+                        </div>
+                        <p class="mb-0 col-md-2 col-md-2 iq-music-time">{{views}} Views</p>
+                        <p class="mb-0 col-md-2 col-md-2 iq-musc-icone">
+                            <a href="javascript:void(0);" class="likeButton " songId="{{songId}}" onclick="likeMusic(this)"><i
+                                            class="font-size-32 text-primary"></i></a>
+                        </p>
+                        <p class="mb-0 col-2 col-md-2 iq-music-play">
+                            <a href="javascript:void(0);" onclick="playMusic({{@index}})"><i
+                                                    class="las la-play-circle font-size-32"></i></a>
+                        </p>
+                        <div class="iq-card-header-toolbar iq-music-drop d-flex align-items-center col-2 col-md-1">
+                            <div class="dropdown">
+                                <span class="dropdown-toggle text-primary" id="dropdownMenuButton2"
+                                    data-toggle="dropdown" aria-expanded="false" role="button">
+                                    <i class="ri-more-2-fill text-primary"></i>
+                                </span>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton2"
+                                    style="">
+                                    <a class="dropdown-item" href="/music/{{songId}}"><i
+                                            class="ri-eye-fill mr-2"></i>View</a>
+                                    <a class="dropdown-item" style="cursor: pointer" onclick="deleteFavoriteSong({{songId}})"><i
+                                            class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
+                                    <a class="dropdown-item" href="/song/upload-{{songId}}.mp3" target='_blank'><i
+                                            class="ri-file-download-fill mr-2"></i>Download</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript"></script>
+{{#section 'js'}}
+
+<script src="/js/music-player.js"></script>
+
+<script>
+
+let track_list = [
+{{#each favoriteList}}
+  {
+    name: "{{Name}}",
+    artist: "{{composer}}",
+    image: "/images/song/upload-{{songId}}.png",
+    path: "/song/upload-{{songId}}.mp3"
+  },
+{{/each}}
+];
+
+{{#if favoriteList}}
+loadTrack(0);
+{{/if}}
+
+
+let likeButton = $('.likeButton')
+let likeStatus = $('.likeButton > i')
+function deleteFavoriteSong(songId) {
+    $.ajax({
+        url: "/favorite/delete",
+        type: "POST",
+        data: 'id=' + songId,
+        success: function (status) {
+            if (status) {
+                const delElement = `favoriteMusic${songId}`;
+                document.getElementById(delElement).remove();
+            }
+            else {
+                alert("Delete failed");
+            }
+        }
+    });
+}
+
+function reloadLiked(){
+    likeStatus.removeClass('ri-heart-line')
+    likeStatus.removeClass('ri-heart-fill')
+    $.get('/song/like').then(resp=>{
+        likeButton.each((id,x)=>{
+            let className = 'ri-heart-line',nextState='1'
+            if (resp.includes(+$(x).attr('songID'))){
+                className = 'ri-heart-fill'
+                nextState = '0'
+            }
+            $(x).children().first().addClass(className)
+            $(x).attr('nextState',nextState)
+        })
+    })
+}
+function likeMusic(ctr){
+    let state = $(ctr).attr('nextState')
+    let id = $(ctr).attr('songID')
+    $.post('/song/like',{id,state}).then(()=>{
+        reloadLiked()    
+    })
+}
+
+reloadLiked();
+</script>
+{{/section}}
