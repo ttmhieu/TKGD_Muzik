@@ -1,0 +1,68 @@
+<div class="iq-sidebar">
+    <div class="iq-sidebar-logo d-flex justify-content-between">
+    <a href="/" class="header-logo">
+        <img src="/images/logo.png" class="img-fluid rounded-normal" alt="">
+        <div class="logo-title">
+            <span class="text-primary text-uppercase">Muzik</span> 
+        </div>
+    </a>
+    <div class="iq-menu-bt-sidebar">
+        <div class="iq-menu-bt align-self-center">
+            <div class="wrapper-menu">
+                <div class="main-circle"><i class="las la-bars"></i></div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div id="sidebar-scrollbar">
+    <nav class="iq-sidebar-menu">
+        <ul id="iq-sidebar-toggle" class="iq-menu">
+            
+            <li {{#if (or (isEqual METHODPAGE '') (isEqual METHODPAGE 'album')) }}class="active active-menu"{{/if}}>
+                <a href="#dashboard" class="iq-waves-effect" data-toggle="collapse" aria-expanded="{{#if (or (isEqual METHODPAGE '') (isEqual METHODPAGE 'album')) }}true{{else}}false{{/if}}"><span class="ripple rippleEffect"></span><i class="las la-home iq-arrow-left"></i><span>Dashboard</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                <ul id="dashboard" class="iq-submenu collapse {{#if (or (isEqual METHODPAGE '') (isEqual METHODPAGE 'album')) }}show{{/if}}" data-parent="#iq-sidebar-toggle">
+                <li class="{{#if (isEqual METHODPAGE '')}}active{{/if}}"><a href="/"><i class="las la-house-damage"></i>Home</a></li>
+                <li class="{{#if (isEqual METHODPAGE 'album')}}active{{/if}}"><a href="/album"><i class="lar la-file-audio"></i>Albums</a></li>
+                </ul>
+            </li>
+
+            {{#if lcIsAuthenticated}}            
+            <li {{#if (isEqual METHODPAGE 'song')}}class="active active-menu"{{/if}}>
+                <a href="#song" class="iq-waves-effect" data-toggle="collapse" aria-expanded="{{#if (isEqual METHODPAGE 'song')}}true{{else}}false{{/if}}"><span class="ripple rippleEffect"></span><i class="las la-microphone-alt iq-arrow-left"></i><span>Song</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                <ul id="song" class="iq-submenu collapse {{#if (isEqual METHODPAGE 'song')}}show{{/if}}" data-parent="#iq-sidebar-toggle">
+                {{#if isAdmin}}
+                <li {{#if ( and (isEqual METHODPAGE2 'list') (isEqual METHODPAGE3 '') ) }}class="active"{{/if}}><a href="/song/list"><i class="las la-th-list"></i>All Song</a></li>
+                {{/if}}
+                <li {{#if (isEqual METHODPAGE3 'me')}}class="active"{{/if}}><a href="/song/list/me"><i class="fa fa-history"></i>My List Song</a></li>
+                <li {{#if (isEqual METHODPAGE2 'upload')}}class="active"{{/if}}><a href="/song/upload"><i class="las la-cloud-upload-alt"></i>Upload Song</a></li>
+                {{#if (and (isEqual METHODPAGE 'song') (isEqual METHODPAGE3 'edit'))}}<li class="active"><a href="#"><i class="las la-edit"></i>Update Song</a></li>{{/if}}
+                </ul>
+            </li>
+
+            {{#if isAdmin}}
+
+            <li {{#if (isEqual METHODPAGE 'category')}}class="active active-menu"{{/if}}>
+                <a href="#category" class="iq-waves-effect" data-toggle="collapse" aria-expanded="{{#if (isEqual METHODPAGE 'category')}}true{{else}}false{{/if}}"><span class="ripple rippleEffect"></span><i class="ri-function-line iq-arrow-left"></i><span>Category</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                <ul id="category" class="iq-submenu collapse {{#if (isEqual METHODPAGE 'category')}}show{{/if}}" data-parent="#iq-sidebar-toggle">
+                <li {{#if (isEqual METHODPAGE2 '')}}class="active"{{/if}}><a href="/category"><i class="las la-th-list"></i>List Category</a></li>
+                <li {{#if (isEqual METHODPAGE2 'add')}}class="active"{{/if}}><a href="/category/add"><i class="las la-plus-circle"></i>Add Category</a></li>
+                {{#if (and (isEqual METHODPAGE 'category') (isEqual METHODPAGE3 'edit'))}}<li class="active"><a href="#"><i class="las la-edit"></i>Update Category</a></li>{{/if}}
+                </ul>
+            </li>
+
+            <li {{#if (isEqual METHODPAGE 'user')}}class="active active-menu"{{/if}}>
+                <a href="#user" class="iq-waves-effect" data-toggle="collapse" aria-expanded="{{#if (isEqual METHODPAGE 'user')}}true{{else}}false{{/if}}"><span class="ripple rippleEffect"></span><i class="ri-admin-line iq-arrow-left"></i><span>User</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                <ul id="user" class="iq-submenu collapse {{#if (isEqual METHODPAGE 'user')}}show{{/if}}" data-parent="#iq-sidebar-toggle">
+                <li {{#if (isEqual METHODPAGE2 '')}}class="active"{{/if}}><a href="/user/"><i class="las la-th-list"></i>List User</a></li>
+                <li {{#if (isEqual METHODPAGE2 'add')}}class="active"{{/if}}><a href="/user/add"><i class="las la-plus-circle"></i>Add User</a></li>
+                {{#if (and (isEqual METHODPAGE 'user') (isEqual METHODPAGE3 'edit'))}}<li class="active"><a href="#"><i class="las la-edit"></i>Update User</a></li>{{/if}}
+                </ul>
+            </li>
+
+            {{/if}}
+
+            {{/if}}
+        </ul>
+    </nav>
+    </div>
+</div>

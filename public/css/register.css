@@ -1,0 +1,12 @@
+.success {
+  color: white;
+  text-align: center;
+  margin: auto;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Text color is error */
+.error{
+  color: red;
+}

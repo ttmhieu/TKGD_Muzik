@@ -1,0 +1,104 @@
+<div class="iq-top-navbar">
+    <div class="iq-navbar-custom">
+    <nav class="navbar navbar-expand-lg navbar-light p-0">
+        <div class="iq-menu-bt d-flex align-items-center">
+            <div class="wrapper-menu">
+                <div class="main-circle"><i class="las la-bars"></i></div>
+            </div>
+            <div class="iq-navbar-logo d-flex justify-content-between">
+                <a href="/" class="header-logo">
+                <img src="/images/logo.png" class="img-fluid rounded-normal" alt="">
+                <div class="pt-2 pl-2 logo-title">
+                    <span class="text-primary text-uppercase">Muzik</span>
+                </div>
+                </a>
+            </div>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
+            <i class="ri-menu-3-line"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="list-unstyled iq-menu-top d-flex justify-content-between mb-0 p-0">
+                <li class="{{#if (isEqual METHODPAGE '')}}active{{/if}}"><a href="/">Home</a></li>
+                <li class="{{#if (isEqual METHODPAGE 'album')}}active{{/if}}"><a href="/album">Album</a></li>
+            </ul>
+            <ul class="navbar-nav ml-auto navbar-list">
+                <li class="nav-item nav-icon">
+                    <div class="iq-search-bar">
+                        <form action="/search" class="searchbox">
+                            <input value="{{searchString}}" type="text" class="text search-input" name='keyword' placeholder="Search Here..">
+                            <a class="search-link" href="#"><i class="ri-search-line text-black"></i></a>
+                        </form>
+                    </div>
+                </li>
+                {{#if lcIsAuthenticated}}
+                <li class="nav-item nav-icon">
+                <a href="/favorite" class="text-black rounded">
+                    <i class="las la-file-audio"></i>
+                    <span class=" dots"></span>
+                </a>
+                </li>
+                <li class="nav-item nav-icon">
+                <a href="/song/upload" class="iq-waves-effect text-black rounded">
+                    <i class="las la-cloud-upload-alt"></i>
+                    <span class="notice-icon dots badge badge-primary">+</span>
+                </a>
+                </li>
+                {{/if}}
+                <li class="line-height pt-3">
+                <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
+                    <img src="{{#if (isEqual lcAuthUser.avatar 1)}}/images/user/upload-{{lcAuthUser.ID}}.png{{else}}/images/user/11.png{{/if}}" class="img-fluid rounded-circle" alt="user">
+                </a>
+                <div class="iq-sub-dropdown iq-user-dropdown">
+                    <div class="iq-card shadow-none m-0">
+                        <div class="iq-card-body p-0 ">
+                            <div class="bg-primary p-3">
+                            <h5 class="mb-0 text-white line-height">Hello {{#if lcAuthUser.userName}}
+                                    {{lcAuthUser.userName}}
+                                {{else}}
+                                Guess
+                                {{/if}} !!!</h5>
+                            {{#if lcAuthUser.permision}}
+                            <span class="text-white font-size-12">Admin</span>
+                            {{/if}}
+                            </div>
+                            {{#if lcIsAuthenticated}}
+                            <a href="/profile" class="iq-sub-card iq-bg-primary-hover">
+                            <div class="media align-items-center">
+                                <div class="rounded iq-card-icon iq-bg-primary">
+                                    <i class="ri-file-user-line"></i>
+                                </div>
+                                <div class="media-body ml-3">
+                                    <h6 class="mb-0 ">Information & Account</h6>
+                                    <p class="mb-0 font-size-12">Edit Information - Change Password</p>
+                                </div>
+                            </div>
+                            </a>
+                            <a href="/song/list/me" class="iq-sub-card iq-bg-primary-hover">
+                            <div class="media align-items-center">
+                                <div class="rounded iq-card-icon iq-bg-primary">
+                                    <i class="ri-profile-line"></i>
+                                </div>
+                                <div class="media-body ml-3">
+                                    <h6 class="mb-0 ">Music Listing</h6>
+                                    <p class="mb-0 font-size-12">Listing, Edit and Update</p>
+                                </div>
+                            </div>
+                            </a>
+                            <div class="d-inline-block w-100 text-center p-3">
+                            <a class="bg-primary iq-sign-btn" href="/logout" role="button">Logout<i class="ri-login-box-line ml-2"></i></a>
+                            </div>
+                            {{else}}
+                            <div class="d-inline-block w-100 text-center p-3">
+                            <a class="bg-primary iq-sign-btn" href="/login" role="button">Login<i class="ri-login-box-line ml-2"></i></a>
+                            </div>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+{{#section 'title'}}{{#if isEdit}}Edit{{else}}Add{{/if}} category{{/section}}
+
+<div class="col-lg-9 mx-auto">
+    <div class="iq-card shadow-lg">
+        <div class="iq-card-header d-flex justify-content-between">
+            <div class="iq-header-title">
+                <h4 class="card-title">{{#if isEdit}}Edit{{else}}Add{{/if}} category</h4>
+            </div>
+        </div>
+        <div class="iq-card-body">
+            <div class="new-user-info">
+                <form action="/category/{{#if isEdit}}edit{{else}}add{{/if}}" method="POST">
+                    <div class="row">
+                        {{#if isEdit}}
+                        <div class="form-group col-md-12">
+                            <label for="categoryId">Category ID:</label>
+                            <input type="text" class="form-control" name="categoryId" value="{{currentCategory.ID}}"
+                                readonly="true">
+                        </div>
+                        {{/if}}
+                        <div class="form-group col-md-12">
+                            <label for="fname">Category name:</label>
+                            <input type="text" class="form-control text-dark" name="name" id="fname" placeholder="Name"
+                                value="{{currentCategory.Name}}" required>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="lname">Category description:</label>
+                            <input type="text" class="form-control text-dark" name="description" id="description"
+                                value="{{currentCategory.description}}" placeholder="description...">
+                        </div>
+                    </div>
+                    <hr>
+                    <a class="btn btn-primary btn-lg" href="/category" role="button">Back</a>
+                    <button id="btnSubmit" type="submit" class="btn bg-info btn-lg">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

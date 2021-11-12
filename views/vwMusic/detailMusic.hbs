@@ -1,0 +1,229 @@
+{{#section 'title'}}{{musicData.Name}}{{/section}}
+<div class="col-lg-12">
+    <div class="iq-card">
+        <div class="iq-card-body">
+            <div class="row">
+                <div class="col-lg-4">
+                    <img src="/images/song/upload-{{musicData.ID}}.png" class="img-fluid w-100" alt="">
+                </div>
+                <div class="col-lg-8">
+                    <div class="d-flex align-items-top justify-content-between iq-music-play-detail">
+                        <div class="music-detail">
+                            <h3>{{musicData.Name}}</h3>
+                            <p class="mb-0">Singer: {{musicData.Singer}}</p>
+                            <p class="mb-0">Composer: {{musicData.composer}}</p>
+                            <p class="mb-0">{{musicData.views}} Views</p>
+                            <p class="mb-0">{{musicData.likes}} Likes</p>
+                            {{#if musicData.publishDate}}
+                            <p class="mb-0">Public Date: {{parseTime musicData.publishDate }}</p>
+                            {{/if}}
+                            <div class="d-flex align-items-center">
+                                <span class="mr-3">Category: </span>
+                                <a style="display: none;" id="categoryName" href="/album/{{musicData.category}}" class="btn btn-primary iq-play mr-2"></a>
+                            </div>
+                        </div>
+                        <div class="music-right">
+                            <div class="d-flex align-items-center">
+                                {{#if lcIsAuthenticated}}
+                                <div class="iq-circle mr-2"><a href="javascript:void(0);" class="likeButton" songId="{{musicData.ID}}" onclick="likeMusic(this)"><i
+                                            class="text-primary"></i></a></div>
+                                <div class="iq-circle mr-2">
+                                    <a onclick="addFavoriteSong({{musicData.ID}})" href="javascript:void(0);"><i class="ri-add-circle-line"></i></a>
+                                </div>
+                                {{/if}}
+                                <div class="iq-circle">
+                                    <a href="/song/upload-{{musicData.ID}}.mp3" target='_blank'><i class="las la-download text-primary"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12">
+    <div class="iq-card">
+        <div class="iq-card-body">
+            <ul class="list-unstyled iq-music-slide mb-0">
+
+                {{#each songList}}
+                <li class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center row">
+                        <div class="media align-items-center col-10 col-md-5">
+                            <div class="iq-realese-song ">
+                                <a href="/music/{{ID}}"><img src="/images/song/upload-{{ID}}.png"
+                                        class="img-border-radius avatar-60 img-fluid" alt=""></a>
+                            </div>
+                            <div class="media-body ml-3">
+                                <p class="mb-0">{{Name}}</p>
+                                <small>{{composer}}</small>
+                            </div>
+                        </div>
+                        <p class="mb-0 col-md-2 col-md-2 iq-music-time">{{views}} Views</p>
+                        {{#if ../lcIsAuthenticated}}
+                        <p class="mb-0 col-md-2 col-md-2 iq-musc-icone">
+                            <a href="javascript:void(0);" class="likeButton " songId="{{ID}}" onclick="likeMusic(this)"><i
+                                            class="font-size-32 text-primary"></i></a>
+                        </p>
+                        <p class="mb-0 col-2 col-md-2 iq-music-play">
+                            <a onclick="addFavoriteSong({{ID}})" href="javascript:void(0);"><i class="font-size-32 ri-add-circle-line"></i></a>
+                        </p>
+                        {{/if}}
+                        <div class="iq-card-header-toolbar iq-music-drop d-flex align-items-center col-2 col-md-1">
+                            <div class="dropdown">
+                                <span class="dropdown-toggle text-primary" id="dropdownMenuButton2"
+                                    data-toggle="dropdown" aria-expanded="false" role="button">
+                                    <i class="ri-more-2-fill text-primary"></i>
+                                </span>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton2"
+                                    style="">
+                                    <a class="dropdown-item" href="/music/{{ID}}">
+                                        <i class="ri-eye-fill mr-2"></i>View
+                                    </a>
+                                    <a class="dropdown-item" href="/song/upload-{{ID}}.mp3" target='_blank'><i
+                                            class="ri-file-download-fill mr-2"></i>Download</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {{/each}}
+
+            </ul>
+        </div>
+    </div>
+</div>
+{{#if lcIsAuthenticated}}
+<div class="col-lg-12">
+    <form id="frmComment">
+        <div class="form-group">
+            <label style="font-size: 18px; font-weight: bold;">How do you feel about this song...?</label>
+            <textarea class="form-control" id="message" style="resize: none" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-info">Comment</button>
+    </form>
+</div>
+{{else}}
+<div class="col-12">
+    <p style="color: red">Please login to comment: 
+        <a href="/login" style="color: blue;">click here to login</a>
+    </p>
+</div>
+{{/if}}
+<div class="col-12 mt-4">
+    <h4>Listener's Feeling...</h4>
+</div>
+<div id="commentList" class="col-lg-12 mt-2">
+    {{#each listComment}}
+    <div class="media mb-3">
+        <img src="{{#if (isEqual avatar 1)}}/images/user/upload-{{ID}}.png{{else}}/images/user/11.png{{/if}}" class="mr-3 avatar-80" alt="#">
+        <div class="media-body">
+            <span style="font-size: 12px; color: green;">{{cmDate}}</span>
+            <h5 class="mt-0">{{userName}}</h5>           
+            {{content}}
+        </div>
+    </div>
+    {{/each}}
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript"></script>
+<script>
+    $('#frmComment').on('submit', function (e) {
+        e.preventDefault();
+        var dataToSend = { comment: $("#message").val(), idMusic: {{ idMusic }} };
+        dataToSend = JSON.stringify({ dataToSend });
+        var currentAvatar = "{{#if (isEqual lcAuthUser.avatar 1)}}/images/user/upload-{{lcAuthUser.ID}}.png{{else}}/images/user/11.png{{/if}}";
+        $.ajax({
+            url: "/music/addcomment",
+            type: "POST",
+            data: 'info=' + dataToSend,
+            success: function (data) {
+                if (data.status) {
+                    $("#commentList").prepend(
+                        '<div class="media mb-3">' +
+                        '<img src="' + currentAvatar + '" class="mr-3 avatar-80" alt="#">' +
+                        '<div class="media-body">' +
+                        '<span style="font-size: 12px; color: green;">' + data.cmDate + '</span><br>' +
+                        '<h5 class="mt-0">{{ lcAuthUser.userName }}</h5>' +                       
+                        $("#message").val() +
+                        '</div>' +
+                        '</div>'
+                    );
+                }
+                else {
+                    alert("The comment was not successful");
+                }
+                $("#message").val("");
+            }
+        });
+    });
+</script>
+
+{{#section 'js'}}
+<!-- Music-player js -->
+<script src="/js/music-player.js"></script>
+<script>
+let track_list = [
+  {
+    name: "{{musicData.Name}}",
+    artist: "{{musicData.Singer}}",
+    image: "/images/song/upload-{{musicData.ID}}.png",
+    path: "/song/upload-{{musicData.ID}}.mp3"
+  }
+];
+loadTrack(0);
+
+
+let categorySong = '{{musicData.category}}'
+let likeButton = $('.likeButton')
+let likeStatus = $('.likeButton > i')
+let categoryName = $('#categoryName')
+
+function reloadLiked(){
+    likeStatus.removeClass('ri-heart-line')
+    likeStatus.removeClass('ri-heart-fill')
+    $.get('/song/like').then(resp=>{
+        likeButton.each((id,x)=>{
+            let className = 'ri-heart-line',nextState='1'
+            if (resp.includes(+$(x).attr('songID'))){
+                className = 'ri-heart-fill'
+                nextState = '0'
+            }
+            $(x).children().first().addClass(className)
+            $(x).attr('nextState',nextState)
+        })
+    })
+}
+function likeMusic(ctr){
+    let state = $(ctr).attr('nextState')
+    let id = $(ctr).attr('songID')
+    $.post('/song/like',{id,state}).then(()=>{
+        reloadLiked()    
+    })
+}
+
+function addFavoriteSong(songId) {
+    $.ajax({
+        url: "/favorite/add",
+        type: "POST",
+        data: 'id=' + songId,
+        success: function (status) {
+           alert("Song added successfully");
+        }
+    });
+}
+
+$.get('/music/getCategoryIdName').then(resp=>{
+    const curCategory = resp.find(x=>x.ID==categorySong)
+    categoryName.html(curCategory.Name)
+    categoryName.removeAttr('style')
+})
+
+{{#if lcIsAuthenticated}}
+reloadLiked()
+{{/if}}
+
+</script>
+{{/section}}
