@@ -38,6 +38,34 @@ router.get('/:id', (req, res,next) => {
     .catch(next)    
 });
 
+router.get('/playsong/:id', (req, res,next) => {
+  const id = +req.params.id || 1;
+  let musicData={}
+
+  songModel.getById(id).then(resp => {
+    if (resp.length == 0 || resp[0].status != 1)
+      throw null
+
+    musicData=resp[0]
+    songModel.patch(id,{views:musicData.views+1})
+    return Promise.all([
+      songModel.getCommentListById(id),
+      songModel.getRandomByCategory(musicData.category,6)
+    ])
+  })
+  .then(([listComment,songList])=>{
+      songList = songList.filter(x=>x.ID != musicData.ID)
+      res.render("../views/vwMusic/detailMusic.hbs", {
+          playable: true, 
+          idMusic: id, 
+          listComment,
+          songList,
+          musicData
+      });
+  })
+  .catch(next)    
+});
+
 router.post('/addcomment', async (req, res) => {
     var info = "";
     try{

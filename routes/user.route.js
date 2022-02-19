@@ -36,12 +36,12 @@ router.post('/register/checkinfo', async (req, res) => {
 });
 
 router.post('/register', async function (req, res) {
-    var passwordHash = bcrypt.hashSync(req.body.Password, config.authentication.saltRounds);
+    //var passwordHash = bcrypt.hashSync(req.body.Password, config.authentication.saltRounds);
     var token = Math.floor(100000 + Math.random() * 900000);
     var getDateTimeNow = Helper.ConverDateTime(new Date());
     var user = {
         userName: req.body.Username,
-        Password: passwordHash,
+        Password: req.body.Password,
         Email: req.body.Email,
         permision: 0,
         delete: 0,
@@ -140,13 +140,14 @@ router.post('/login', async function (req, res) {
             err: 'Invalid username or password.'
         })
     }
-    const rs = bcrypt.compareSync(req.body.password, user.password);
-    if (rs === false) {
+    //const rs = bcrypt.compareSync(req.body.password, user.password);
+    if (req.body.password !== user.password) {
         return res.render('vwUser/login', {
             fullPage: true,
             err: 'Invalid username or password.'
         })
     }
+    console.log(req.body.password !== user.password);
     if (user.status === 0) {
         var linkActive = `${config.site.url}/active?token=${user.activeToken}`;
         mailer.sendActiveToken(user.email, linkActive);

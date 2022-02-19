@@ -29,7 +29,7 @@
   --iq-light-menu: #9f8bf6;
   --iq-light-search: #5b43c7;
   --iq-light-hover: #b8b9bc;
-  --iq-primary-hover: #fa3a3a;
+  --iq-primary-hover: #88028c;
   --iq-secondary-hover: #5b5959;
   --iq-success-hover: #0ce1a6;
   --iq-danger-hover: #f9663c;
@@ -42,7 +42,8 @@
   --iq-primary-rgb: 100, 114, 248;
   --iq-border-radius:0px 15px;
   --iq-bg-gray:#f8f8fd;
-  --iq-hover:#ea0f0f;
+  --iq-hover:#88028c  ;
+  --iq-edit:rgb(221, 221, 221);
   /* color for customizer*/
   --iq-color1: #4e37b2;
   --iq-color2: #02d871;
