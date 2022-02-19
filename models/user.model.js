@@ -1,6 +1,6 @@
 const db = require("../utils/dao");
 
-const TBL_USER = "Users"
+const TBL_USER = "users"
 module.exports = {
     getListUserByPagination: function(page, offset){
         return db.load(`SELECT US.* FROM ${TBL_USER} US WHERE US.delete = 0 limit ${page} offset ${offset}`);

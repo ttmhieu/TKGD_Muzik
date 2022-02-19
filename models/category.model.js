@@ -1,7 +1,7 @@
 const db = require("../utils/dao");
 
-const TBL_Categories = "Categories";
-const TBL_SONG="Songs";
+const TBL_Categories = "categories";
+const TBL_SONG = "songs";
 
 module.exports = {
     countCategory: async function () {

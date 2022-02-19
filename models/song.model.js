@@ -1,10 +1,10 @@
 const db=require("../utils/dao");
 
-const TBL_SONG="Songs";
-const TBL_Users_Comments = "Users_Comments";
-const TBL_Users_like_Songs = "Users_like_Songs";
-const TBL_Users = "Users";
-const TBL_Users_Favorite_Songs = "Users_Favorite_Songs";
+const TBL_SONG= "songs";
+const TBL_Users_Comments = "users_comments";
+const TBL_Users_like_Songs = "users_like_songs";
+const TBL_Users = "users";
+const TBL_Users_Favorite_Songs = "users_favorite_songs";
 
 module.exports={
     add: function(song){

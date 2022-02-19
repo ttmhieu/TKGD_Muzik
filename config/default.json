@@ -13,11 +13,10 @@
     },
     "mysql": {
         "connectionLimit": 50,
-        "host": "localhost",
-        "port":"3306",
-        "user": "root",
-        "password": "",
-        "database": "muzik",
+        "host": "remotemysql.com",
+        "user": "mbEyXAx9IE",
+        "password": "AxOhS2CbEs",
+        "database": "mbEyXAx9IE",
         "multipleStatements":true
     },
     "pagination": {
