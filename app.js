@@ -62,8 +62,9 @@ app.use(function (err, req, res, next) {
   res.render('500',{fullPage:true})
 });
 
-app.listen(process.env.WEB_PORT, () => {
-  console.log(
-    `Server is running at ${config.site.url}`
-  );
-});
+// app.listen(process.env.WEB_PORT, () => {
+//   console.log(
+//     `Server is running at ${config.site.url}`
+//   );
+// });
+module.exports  = app;
