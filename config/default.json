@@ -1,6 +1,6 @@
 {
     "site" : {
-        "url": "https://muzik15tkgd.herokuapp.com/"
+        "url": "http://localhost:3000"
     },
     "authentication":{
         "saltRounds": 8
