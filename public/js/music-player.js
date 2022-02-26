@@ -12,15 +12,40 @@ let volume_slider = document.querySelector(".volume_slider");
 let curr_time = document.querySelector(".current-time");
 let total_duration = document.querySelector(".total-duration");
 
+let footer = document.querySelector(".iq-footer");
+let player_fullscreen = document.getElementById("playerFullScreen");
+let icon_fullscreen = document.getElementById("iconFullscreen");
+let canvas = document.getElementById("playerFullScreenCanvas");
+
 let track_index = 0;
 let isPlaying = false;
 let updateTimer;
+
+let audioCtx;
+let src;
+let analyser;
 
 // Create new audio element
 let curr_track = document.createElement('audio');
 console.log(curr_track);
 
 // Define the tracks that have to be played
+
+let isFullscreen = false;
+function openFullscreenMusicPlayer() {
+  
+  if (!isFullscreen) {
+    footer.style.background = 'rgba(0, 0, 0, 1)';
+    player_fullscreen.style.display = 'block';
+    isFullscreen = true;
+    icon_fullscreen.className = 'fa fa-compress fa-lg'
+  } else {
+    footer.style.background = 'rgba(1, 4, 27, 0.6)';
+    player_fullscreen.style.display = 'none';
+    isFullscreen = false;
+    icon_fullscreen.className = 'fa fa-expand fa-lg'
+  }
+}
 
 function random_bg_color() {
 
@@ -72,6 +97,52 @@ function playTrack() {
   curr_track.play();
   isPlaying = true;
   playpause_btn.innerHTML = '<i class="fa fa-pause-circle fa-3x"></i>';
+
+  audioCtx = new AudioContext();
+  src = audioCtx.createMediaElementSource(curr_track);
+  analyser = audioCtx.createAnalyser();
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  let ctx = canvas.getContext("2d");
+  src.connect(analyser);
+  analyser.connect(audioCtx.destination);
+  analyser.fftSize = 256;
+  let bufferLength = analyser.frequencyBinCount;
+  let dataArray = new Uint8Array(bufferLength);
+
+  let WIDTH = canvas.width;
+  let HEIGHT = canvas.height;
+
+  let barWidth = (WIDTH / bufferLength) * 2.5;
+  let barHeight;
+  let x = 0;
+
+  function renderFrame() {
+    requestAnimationFrame(renderFrame);
+
+    x = 0;
+
+    analyser.getByteFrequencyData(dataArray);
+
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+    for (let i = 0; i < bufferLength; i++) {
+      barHeight = dataArray[i];
+      
+      let r = barHeight + (50 * (i/bufferLength));
+      let g = 250 * (i/bufferLength);
+      let b = 50;
+
+      ctx.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
+      ctx.fillRect(x, HEIGHT - barHeight, barWidth, barHeight);
+
+      x += barWidth + 1;
+    }
+  }
+
+  curr_track.play();
+  renderFrame();
 }
 
 function pauseTrack() {
@@ -127,5 +198,3 @@ function seekUpdate() {
     total_duration.textContent = durationMinutes + ":" + durationSeconds;
   }
 }
-
-
